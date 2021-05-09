@@ -3,28 +3,24 @@ import json
 import os
 app = Flask (__name__)
 
-with open("books.json") as libros:
-        datos=json.load(libros)
-
+with open("books.json") as fichero:
+    datos=json.load(fichero)
 
 @app.route('/')
 def inicio():
-    nombre='Jose Antonio Canalo Gonzalez'
-    return render_template('inicio.html', libros=datos, nombre=nombre)
+    return render_template("inicio.html",libros=datos)
 
 @app.route('/libro/<isbn>')
 def libro(isbn):
-    for l in datos:
-
-        
-        if "isbn" in l.keys() and isbn == l["isbn"]:
-            return render_template('libro.html',libro=1)
-
-    return abort(404)
+    for i in datos:
+        if "isbn" in i.keys() and isbn == i["isbn"]:
+            return render_template("libros.html",libro=i)
+    abort(404)
 
 @app.route('/categoria/<categoria>')
 def categoria(categoria):
-            return render_template('categoria.html', libros=datos, categoria=categoria)
-          
-
+    for i in datos:
+        if "categories" in i.keys() and categoria in i["categories"]:
+            return render_template("categoria.html",libros=datos,categoria=categoria)
+    abort(404)
 app.run(debug=True)
