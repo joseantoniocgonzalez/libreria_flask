@@ -1,32 +1,30 @@
-from flask import flask, render_template. abort
+from flask import Flask, render_template, abort
 import json
-import os 
+import os
+app = Flask (__name__)
 
-app=flask(__name__)
-
-whith open("books.json") as libros:
+with open("books.json") as libros:
         datos=json.load(libros)
 
 
 @app.route('/')
 def inicio():
     nombre='Jose Antonio Canalo Gonzalez'
-    return render_template(('inicio.html', libros=datos, nombre=nombre)
+    return render_template('inicio.html', libros=datos, nombre=nombre)
 
 @app.route('/libro/<isbn>')
 def libro(isbn):
-    for 1 in datos:
+    for l in datos:
 
         
-        if "isbn" in 1.keys() and isbn ==1["isbn"]:
+        if "isbn" in l.keys() and isbn == l["isbn"]:
             return render_template('libro.html',libro=1)
 
     return abort(404)
 
-@app.router('/categoria/categoria>')
+@app.route('/categoria/<categoria>')
 def categoria(categoria):
-            return render_template('categoria.html'), libros=datos, categoria=categoria)
+            return render_template('categoria.html', libros=datos, categoria=categoria)
+          
 
-
-port=os.environ["PORT"]
-app.run('0.0.0.0', int(port), debug=False)
+app.run(debug=True)
